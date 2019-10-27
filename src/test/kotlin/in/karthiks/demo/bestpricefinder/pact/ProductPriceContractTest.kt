@@ -39,13 +39,41 @@ class ProductPriceContractTest {
                 .toPact()
     }
 
+    @Pact(provider = "ProductPriceService", consumer = "BestPriceFinder")
+    fun getExceptionOnInvalidUPC(builder: PactDslWithProvider): RequestResponsePact {
+        val responseBody = PactDslJsonBody()
+                .stringMatcher("upc", "\\d*", "12341234")
+                .stringType("name")
+                .eachLike("catalog")
+                .stringType("vendorName")
+                .numberType("price")
+                .closeArray()
+                .asBody()
+        return builder
+                .given("Invalid UPC")
+                .uponReceiving("Request for Best Price")
+                .matchPath("/products/(\\d+)/prices")
+                .method("GET")
+                .willRespondWith()
+                .status(404)
+                .toPact()
+    }
+
     @PactTestFor(pactMethod = "getPrices")
     @Test
     @Throws(IOException::class)
-    fun testGetCouponsCompact(mockServer: MockServer) {
+    fun testForResponseWithValidUPC(mockServer: MockServer) {
         val httpResponse = Request.Get(mockServer.getUrl() + "/products/12345/prices")
                 .execute().returnResponse()
         assertEquals(200, httpResponse.getStatusLine().getStatusCode())
     }
 
+    @PactTestFor(pactMethod = "getExceptionOnInvalidUPC")
+    @Test
+    @Throws(IOException::class)
+    fun testForResponseWithInvalidUPC(mockServer: MockServer) {
+        val httpResponse = Request.Get(mockServer.getUrl() + "/products/12345/prices")
+                .execute().returnResponse()
+        assertEquals(404, httpResponse.getStatusLine().getStatusCode())
+    }
 }
