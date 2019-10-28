@@ -41,14 +41,6 @@ class ProductPriceContractTest {
 
     @Pact(provider = "ProductPriceService", consumer = "BestPriceFinder")
     fun getExceptionOnInvalidUPC(builder: PactDslWithProvider): RequestResponsePact {
-        val responseBody = PactDslJsonBody()
-                .stringMatcher("upc", "\\d*", "12341234")
-                .stringType("name")
-                .eachLike("catalog")
-                .stringType("vendorName")
-                .numberType("price")
-                .closeArray()
-                .asBody()
         return builder
                 .given("Invalid UPC")
                 .uponReceiving("Request for Best Price")
