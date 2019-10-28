@@ -35,7 +35,7 @@ class BestPriceService() {
             }
             return Product(upc, name, bestPriceVendor)
         } catch (ex: HttpClientErrorException) {
-            if (ex.statusCode == HttpStatus.NOT_FOUND )
+            if (ex.statusCode == HttpStatus.BAD_REQUEST )
                 throw ProductNotFoundException()
             else
                 throw ex
