@@ -6,6 +6,7 @@ import `in`.karthiks.demo.bestpricefinder.model.VendorPrice
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
@@ -34,7 +35,10 @@ class BestPriceService() {
             }
             return Product(upc, name, bestPriceVendor)
         } catch (ex: HttpClientErrorException) {
-            throw ProductNotFoundException()
+            if (ex.statusCode == HttpStatus.NOT_FOUND )
+                throw ProductNotFoundException()
+            else
+                throw ex
         }
     }
 
