@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.2.0.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
+    id("au.com.dius.pact") version "4.0.2"
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.spring") version "1.3.50"
 }
@@ -21,8 +22,16 @@ dependencies {
     implementation ("com.google.code.gson:gson")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("au.com.dius:pact-jvm-consumer-junit5:4.0.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+    }
+}
+
+pact {
+    publish {
+        pactDirectory = "target/pacts"
+        pactBrokerUrl = "http://localhost"
     }
 }
 
