@@ -1,4 +1,4 @@
-package com.kroger.dc.savings.pact
+package `in`.karthiks.demo.bestpricefinder.pact
 
 import au.com.dius.pact.consumer.MockServer
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody
