@@ -37,6 +37,7 @@ pact {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("pact.writer.overwrite", true)
 }
 
 tasks.withType<KotlinCompile> {
